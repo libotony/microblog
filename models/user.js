@@ -5,7 +5,7 @@
 		this.password = user.password;
 	};
 
-	module.exprots = User;
+	module.exports = User;
 
 	User.prototype.save = function save(callback){
 		var user = {

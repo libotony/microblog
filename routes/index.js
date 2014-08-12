@@ -2,6 +2,8 @@
 /*
  * GET home page.
  */
+var crypto =  require('crypto');
+var User = require('../models/user');
 
 module.exports = function(app){
    app.all("*",function(req, res, next){
@@ -34,7 +36,31 @@ module.exports = function(app){
 			return res.redirect('/reg');
 			console.log(req.session.error);
 		}
-		console.log(req.body['username']);
+		
+		var md5 = crypto.createHash('md5');
+		var password = md5.update(req.body.password).digest('base64');
+		
+		var newUser = new User({
+			name:req.body.username,
+			password:password,
+		});
+
+		User.get(newUser.name,function(err, user){
+			if(user)
+				err = '用户名已存在';
+			if(err){
+				req.session.error = err;
+				return res.redirect('/reg');
+			}
+			newUser.save(function(err){
+				if(err){
+					req.session.error = err;
+					return res.redirect('/reg');
+				}
+				req.session.user = newUser;
+				res.redirect('/');
+			});
+		});
 	});
 	app.get('/u/:user',function(req, res){
 	});
