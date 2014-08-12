@@ -22,7 +22,6 @@ app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
-app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.cookieParser());
 app.use(express.session({
@@ -31,6 +30,7 @@ app.use(express.session({
 		db:settings.db
 		})
 		}));
+app.use(app.router);
 
 // development only
 if ('development' == app.get('env')) {
