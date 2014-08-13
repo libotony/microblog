@@ -8,9 +8,15 @@ var Post = require('../models/post');
 
 module.exports = function(app){
   app.get('/',function(req, res){
-    res.render('index',{
-      title:'首页'
-		});
+    Post.get(null,function(err,posts){
+      if(err){
+        posts = [];
+      }
+      res.render('index',{
+        title:'首页',
+        posts:posts,
+		  });
+    });
   });
   app.get('/reg',checkNotLogin);
   app.get('/reg',function(req, res){
