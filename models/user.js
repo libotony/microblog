@@ -20,7 +20,7 @@
 					mongodb.close();
 					return callback(err);
 				}
-				collection.eunsureIndex('name',{unique:true});
+				collection.ensureIndex('name',{unique:true},function(err,user){});
 				collection.insert(user,{safe:true},function(err,user){
 					mongodb.close();
 					callback(err,user);

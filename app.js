@@ -22,14 +22,28 @@ app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/',express.static(path.join(__dirname, 'public')));
 app.use(express.cookieParser());
 app.use(express.session({
 	secret: settings.cookieSecret,
 	store: new MongoStore({
 		db:settings.db
 		})
-		}));
+}));
+app.use(function(req, res, next){
+    res.locals.user = req.session.user;
+    var err = req.session.error;
+    delete req.session.error;
+    var suc = req.session.success;
+    delete req.session.success;
+    res.locals.error = '';
+    if(err)
+       res.locals.error = '<div class="alert alert-error">'+err+'</div>';
+    res.locals.success = '';
+    if(suc)
+       res.locals.success = '<div class="alert alert-success">'+suc+'</div>';
+   next();
+});
 app.use(app.router);
 
 // development only

@@ -10,7 +10,7 @@
                 padding-left:40px;
 		padding-right:40px;
 		} </style>
-	<link href="stylesheets/bootstrap-responsive.css" rel="stylesheet">  
+	<link href="/stylesheets/bootstrap-responsive.css" rel="stylesheet">  
   </head>
   <body>
     <div class="navbar navbar-fixed-top">
@@ -25,11 +25,21 @@
 	  <div class="nav-collapse">
             <ul class="nav">
               <li class="active"><a href="/">首页</a></li>
-              <li><a href="/login">登入</a></li>
+              <% if(!user) { %>
+              <li><a href="/login">登陆</a></li>
               <li><a href="/reg">注册</a></li>
+              <% } else { %>
+              <li><a href="/logout">退出</a></li>
+              <% } %>
             </ul>
           </div>
         </div> 
       </div>
     </div>
     </div id="container" class="container">
+    <% if(success) { %>
+        <%- success %>
+    <% } %>
+    <% if(error) { %>
+        <%- error %>
+    <% } %>
